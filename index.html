@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAYY PANEL - Free Fire</title>
+    <style>
+        /* Gaya Dasar / Tema Dark Mode */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container Utama Panel */
+        .panel-container {
+            width: 360px;
+            background: linear-gradient(145deg, #1e1e24, #141418);
+            border: 2px solid #ff4a4a;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(255, 74, 74, 0.2);
+            overflow: hidden;
+        }
+
+        /* Header Panel */
+        .panel-header {
+            background-color: #ff4a4a;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Konten Utama / Menu Fitur */
+        .panel-content {
+            padding: 20px;
+        }
+
+        /* Baris Fitur (Nama Fitur + Switch) */
+        .feature-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #2a2a35;
+        }
+
+        .feature-row:last-child {
+            border-bottom: none;
+        }
+
+        .feature-name {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Gaya Tombol Switch ON/OFF */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #444;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        /* Efek ketika Switch di-ON-kan */
+        input:checked + .slider {
+            background-color: #00ff66;
+            box-shadow: 0 0 10px #00ff66;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Footer Panel */
+        .panel-footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.8rem;
+            color: #777;
+            background-color: #0d0d11;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LAYAR UTAMA BAYY PANEL -->
+    <div class="panel-container">
+        
+        <!-- Bagian Header -->
+        <div class="panel-header">
+            BAYY PANEL v1.0
+        </div>
+
+        <!-- Bagian List Fitur Cheat (On/Off) -->
+        <div class="panel-content">
+            
+            <!-- Fitur 1 -->
+            <div class="feature-row">
+                <span class="feature-name">🎯 Auto Aimbot</span>
+                <label class="switch">
+                    <input type="checkbox" id="aimbot" onchange="toggleFitur('Aimbot', this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- Fitur 2 -->
+            <div class="feature-row">
+                <span class="feature-name">🔴 ESP Antenna</span>
+                <label class="switch">
+                    <input type="checkbox" id="antenna" onchange="toggleFitur('ESP Antenna', this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- Fitur 3 -->
+            <div class="feature-row">
+                <span class="feature-name">⚡ Speed Hack</span>
+                <label class="switch">
+                    <input type="checkbox" id="speed" onchange="toggleFitur('Speed Hack', this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- Fitur 4 -->
+            <div class="feature-row">
+                <span class="feature-name">🍏 Auto Headshot 99%</span>
+                <label class="switch">
+                    <input type="checkbox" id="headshot" onchange="toggleFitur('Auto Headshot', this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+        </div>
+
+        <!-- Bagian Footer -->
+        <div class="panel-footer">
+            © 2026 BAYY PANEL • Keamanan Terjaga
+        </div>
+    </div>
+
+    <!-- JavaScript untuk logika On/Off -->
+    <script>
+        function toggleFitur(namaFitur, status) {
+            if (status) {
+                console.log(namaFitur + " diaktifkan (ON)");
+                // Tempatkan kode fungsi cheat ON di sini jika diintegrasikan ke aplikasi/game
+            } else {
+                console.log(namaFitur + " dimatikan (OFF)");
+                // Tempatkan kode fungsi cheat OFF di sini
+            }
+        }
+    </script>
+
+</body>
+</html>

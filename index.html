@@ -2,194 +2,125 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BAYY PANEL - Free Fire</title>
+    <title>BAYY VIP PANEL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Gaya Dasar / Tema Dark Mode */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+        body { margin: 0; background: #000; color: white; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; }
 
-        /* Container Utama Panel */
-        .panel-container {
-            width: 360px;
-            background: linear-gradient(145deg, #1e1e24, #141418);
-            border: 2px solid #ff4a4a;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(255, 74, 74, 0.2);
-            overflow: hidden;
-        }
+        /* Intro 3 Detik */
+        #intro { position: fixed; inset: 0; background: #000; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: fadeOut 0.5s forwards 5s; }
+        .welcome-text { font-family: 'Montserrat'; font-size: 24px; color: #00d2ff; margin-bottom: 20px; }
+        .bar-container { width: 250px; height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
+        .bar-fill { width: 0%; height: 100%; background: #00d2ff; animation: fill 5s linear forwards; }
 
-        /* Header Panel */
-        .panel-header {
-            background-color: #ff4a4a;
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.4rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
+        /* Panel */
+        .panel { background: #0a0a0a; width: 300px; padding: 25px; border-radius: 20px; border: 1px solid #333; text-align: center; }
+        .pass-wrapper { position: relative; display: flex; align-items: center; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #222; border-radius: 10px; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #00d2ff; border: none; border-radius: 10px; color: white; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        
+        /* Pesan Error & Spinner */
+        #errorMsg { color: #ff4757; font-size: 13px; margin-top: 10px; height: 20px; }
+        .spinner { border: 4px solid #333; border-top: 4px solid #00d2ff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 10px auto; display: none; }
 
-        /* Konten Utama / Menu Fitur */
-        .panel-content {
-            padding: 20px;
-        }
+        /* Icon Mata */
+        .eye-icon { position: absolute; right: 12px; cursor: pointer; fill: #666; width: 20px; height: 20px; }
 
-        /* Baris Fitur (Nama Fitur + Switch) */
-        .feature-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #2a2a35;
-        }
+        /* Switch */
+        .feature-item { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 12px; margin: 8px 0; border-radius: 10px; }
+        .switch { width: 50px; height: 25px; background: #222; border-radius: 25px; position: relative; cursor: pointer; transition: 0.4s; }
+        .switch::before { content: ''; position: absolute; width: 21px; height: 21px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.4s; }
+        .switch.active { background: #00d2ff; }
+        .switch.active::before { left: 27px; }
 
-        .feature-row:last-child {
-            border-bottom: none;
-        }
-
-        .feature-name {
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        /* Gaya Tombol Switch ON/OFF */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #444;
-            transition: .3s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-
-        /* Efek ketika Switch di-ON-kan */
-        input:checked + .slider {
-            background-color: #00ff66;
-            box-shadow: 0 0 10px #00ff66;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
-
-        /* Footer Panel */
-        .panel-footer {
-            text-align: center;
-            padding: 10px;
-            font-size: 0.8rem;
-            color: #777;
-            background-color: #0d0d11;
-        }
+        .main-menu { opacity: 0; transition: 2s; display: none; }
+        #successText { font-size: 28px; color: #00d2ff; opacity: 0; transition: 1s; font-family: 'Montserrat'; display: none; position: absolute; }
+        
+        @keyframes fill { to { width: 100%; } }
+        @keyframes fadeOut { to { visibility: hidden; opacity: 0; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+    <audio id="clickSfx" src="https://www.myinstants.com/media/sounds/click-button.mp3"></audio>
 
-    <!-- LAYAR UTAMA BAYY PANEL -->
-    <div class="panel-container">
-        
-        <!-- Bagian Header -->
-        <div class="panel-header">
-            BAYY PANEL v1.0
-        </div>
-
-        <!-- Bagian List Fitur Cheat (On/Off) -->
-        <div class="panel-content">
-            
-            <!-- Fitur 1 -->
-            <div class="feature-row">
-                <span class="feature-name">🎯 Auto Aimbot</span>
-                <label class="switch">
-                    <input type="checkbox" id="aimbot" onchange="toggleFitur('Aimbot', this.checked)">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <!-- Fitur 2 -->
-            <div class="feature-row">
-                <span class="feature-name">🔴 ESP Antenna</span>
-                <label class="switch">
-                    <input type="checkbox" id="antenna" onchange="toggleFitur('ESP Antenna', this.checked)">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <!-- Fitur 3 -->
-            <div class="feature-row">
-                <span class="feature-name">⚡ Speed Hack</span>
-                <label class="switch">
-                    <input type="checkbox" id="speed" onchange="toggleFitur('Speed Hack', this.checked)">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <!-- Fitur 4 -->
-            <div class="feature-row">
-                <span class="feature-name">🍏 Auto Headshot 99%</span>
-                <label class="switch">
-                    <input type="checkbox" id="headshot" onchange="toggleFitur('Auto Headshot', this.checked)">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-        </div>
-
-        <!-- Bagian Footer -->
-        <div class="panel-footer">
-            © 2026 BAYY PANEL • Keamanan Terjaga
-        </div>
+    <div id="intro">
+        <div class="welcome-text">WELCOME BAYY VIP</div>
+        <div class="bar-container"><div class="bar-fill"></div></div>
     </div>
 
-    <!-- JavaScript untuk logika On/Off -->
-    <script>
-        function toggleFitur(namaFitur, status) {
-            if (status) {
-                console.log(namaFitur + " diaktifkan (ON)");
-                // Tempatkan kode fungsi cheat ON di sini jika diintegrasikan ke aplikasi/game
-            } else {
-                console.log(namaFitur + " dimatikan (OFF)");
-                // Tempatkan kode fungsi cheat OFF di sini
-            }
-        }
-    </script>
+    <div class="panel" id="loginBox">
+        <div style="color: #00d2ff; margin-bottom: 10px;">BAYY VIP ACCESS</div>
+        <input type="text" id="user" placeholder="Nickname">
+        <div class="pass-wrapper">
+            <input type="password" id="pass" placeholder="Password">
+            <svg id="eye" class="eye-icon" viewBox="0 0 24 24" onclick="togglePass()">
+                <path id="eyePath" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13c-3.04 0-5.5-2.46-5.5-5.5s2.46-5.5 5.5-5.5 5.5 2.46 5.5 5.5-2.46 5.5-5.5 5.5zm0-9a3.5 3.5 0 0 0-3.5 3.5 3.5 3.5 0 0 0 3.5 3.5 3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5z"/>
+            </svg>
+        </div>
+        <button onclick="startAuth()">LOGIN</button>
+        <div id="spinner" class="spinner"></div>
+        <div id="errorMsg"></div>
+    </div>
 
+    <div id="successText">SUCCESS</div>
+
+    <div class="panel main-menu" id="modMenu">
+        <h3>BAYY VIP PANEL</h3>
+        <div class="feature-item"><span>Drag HS</span> <div class="switch" onclick="toggle(this)"></div></div>
+        <div class="feature-item"><span>Bodylock</span> <div class="switch" onclick="toggle(this)"></div></div>
+        <div class="feature-item"><span>Headlock</span> <div class="switch" onclick="toggle(this)"></div></div>
+        <div class="feature-item"><span>Aimlock</span> <div class="switch" onclick="toggle(this)"></div></div>
+        <button onclick="location.reload()" style="background:#ff4757">LOGOUT</button>
+    </div>
+
+<script>
+    function togglePass() {
+        let x = document.getElementById("pass");
+        let path = document.getElementById("eyePath");
+        if (x.type === "password") {
+            x.type = "text";
+            path.setAttribute("d", "M11.83 9l2.22 2.22c.05-.23.1-.47.1-.72A2.5 2.5 0 0 0 11.65 8l.18 1zm8.32 1.48L18.5 8.87l-1.39 1.39c.64.44 1.25.96 1.77 1.55-1.73 4.39-6 7.5-11 7.5-.66 0-1.3-.06-1.92-.17l-1.57 1.57-1.41-1.41 15.17-15.17 1.41 1.41-2.28 2.28z");
+        } else {
+            x.type = "password";
+            path.setAttribute("d", "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13c-3.04 0-5.5-2.46-5.5-5.5s2.46-5.5 5.5-5.5 5.5 2.46 5.5 5.5-2.46 5.5-5.5 5.5zm0-9a3.5 3.5 0 0 0-3.5 3.5 3.5 3.5 0 0 0 3.5 3.5 3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5z");
+        }
+    }
+
+    function startAuth() {
+        let u = document.getElementById('user').value;
+        let p = document.getElementById('pass').value;
+        let err = document.getElementById('errorMsg');
+        let spin = document.getElementById('spinner');
+
+        if (u !== "bayy VIP") {
+            err.innerText = "Nickname salah!";
+        } else if (p !== "2011") {
+            err.innerText = "Password salah!";
+        } else {
+            err.innerText = "";
+            spin.style.display = "block";
+            setTimeout(() => {
+                spin.style.display = "none";
+                document.getElementById('loginBox').style.display = "none";
+                let s = document.getElementById('successText');
+                s.style.display = "block";
+                setTimeout(() => { s.style.opacity = "1"; }, 100);
+                setTimeout(() => { s.style.opacity = "0"; }, 1500);
+                setTimeout(() => {
+                    s.style.display = "none";
+                    let menu = document.getElementById('modMenu');
+                    menu.style.display = "block";
+                    setTimeout(() => { menu.style.opacity = "1"; }, 100);
+                }, 2000);
+            }, 2000);
+        }
+    }
+
+    function toggle(el) {
+        document.getElementById('clickSfx').play();
+        el.classList.toggle('active');
+    }
+</script>
 </body>
 </html>

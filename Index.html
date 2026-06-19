@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>BAYY VIP PANEL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #000; color: white; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; }
+
+        /* Intro 3 Detik */
+        #intro { position: fixed; inset: 0; background: #000; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: fadeOut 0.5s forwards 5s; }
+        .welcome-text { font-family: 'Montserrat'; font-size: 24px; color: #00d2ff; margin-bottom: 20px; }
+        .bar-container { width: 250px; height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
+        .bar-fill { width: 0%; height: 100%; background: #00d2ff; animation: fill 5s linear forwards; }
+
+        /* Panel */
+        .panel { background: #0a0a0a; width: 300px; padding: 25px; border-radius: 20px; border: 1px solid #333; text-align: center; }
+        .pass-wrapper { position: relative; display: flex; align-items: center; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #222; border-radius: 10px; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #00d2ff; border: none; border-radius: 10px; color: white; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        
+        /* Pesan Error & Spinner */
+        #errorMsg { color: #ff4757; font-size: 13px; margin-top: 10px; height: 20px; }
+        .spinner { border: 4px solid #333; border-top: 4px solid #00d2ff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 10px auto; display: none; }
+
+        /* Icon Mata */
+        .eye-icon { position: absolute; right: 12px; cursor: pointer; fill: #666; width: 20px; height: 20px; }
+
+        /* Switch */
+        .feature-item { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 12px; margin: 8px 0; border-radius: 10px; }
+        .switch { width: 50px; height: 25px; background: #222; border-radius: 25px; position: relative; cursor: pointer; transition: 0.4s; }
+        .switch::before { content: ''; position: absolute; width: 21px; height: 21px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.4s; }
+        .switch.active { background: #00d2ff; }
+        .switch.active::before { left: 27px; }
+
+        .main-menu { opacity: 0; transition: 2s; display: none; }
+        #successText { font-size: 28px; color: #00d2ff; opacity: 0; transition: 1s; font-family: 'Montserrat'; display: none; position: absolute; }
+        
+        @keyframes fill { to { width: 100%; } }
+        @keyframes fadeOut { to { visibility: hidden; opacity: 0; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <audio id="clickSfx" src="https://www.myinstants.com/media/sounds/click-button.mp3"></audio>
+
+    <div id="intro">
+        <div class="welcome-text">WELCOME BAYY VIP</div>
+        <div class="bar-container"><div class="bar-fill"></div></div>
+    </div>
+
+    <div class="panel" id="loginBox">
+        <div style="color: #00d2ff; margin-bottom: 10px;">BAYY VIP ACCESS</div>
+        <input type="text" id="user" placeholder="Nickname">
+        <div class="pass-wrapper">
+            <input type="password" id="pass" placeholder="Password">
+            <svg id="eye" class="eye-icon" viewBox="0 0 24 24" onclick="togglePass()">
+                <path id="eyePath" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13c-3.04 0-5.5-2.46-5.5-5.5s2.46-5.5 5.5-5.5 5.5 2.46 5.5 5.5-2.46 5.5-5.5 5.5zm0-9a3.5 3.5 0 0 0-3.5 3.5 3.5 3.5 0 0 0 3.5 3.5 3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5z"/>
+            </svg>
+        </div>
+        <button onclick="startAuth()">LOGIN</button>
+        <div id="spinner" class="spinner"></div>
+        <div id="errorMsg"></div>
+    </div>
+
+    <div id="successText">SUCCESS</div>
+
+    <div class="panel main-menu" id="modMenu">
+        <h3>BAYY VIP PANEL</h3>
+        <div class="feature-item"><span>Drag HS</span> <div class="switch" onclick="toggle(this)"></div></div>
+        <div class="feature-item"><span>Bodylock</span> <div class="switch" onclick="toggle(this)"></div></div>
+        <div class="feature-item"><span>Headlock</span> <div class="switch" onclick="toggle(this)"></div></div>
+        <div class="feature-item"><span>Aimlock</span> <div class="switch" onclick="toggle(this)"></div></div>
+        <button onclick="location.reload()" style="background:#ff4757">LOGOUT</button>
+    </div>
+
+<script>
+    function togglePass() {
+        let x = document.getElementById("pass");
+        let path = document.getElementById("eyePath");
+        if (x.type === "password") {
+            x.type = "text";
+            path.setAttribute("d", "M11.83 9l2.22 2.22c.05-.23.1-.47.1-.72A2.5 2.5 0 0 0 11.65 8l.18 1zm8.32 1.48L18.5 8.87l-1.39 1.39c.64.44 1.25.96 1.77 1.55-1.73 4.39-6 7.5-11 7.5-.66 0-1.3-.06-1.92-.17l-1.57 1.57-1.41-1.41 15.17-15.17 1.41 1.41-2.28 2.28z");
+        } else {
+            x.type = "password";
+            path.setAttribute("d", "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13c-3.04 0-5.5-2.46-5.5-5.5s2.46-5.5 5.5-5.5 5.5 2.46 5.5 5.5-2.46 5.5-5.5 5.5zm0-9a3.5 3.5 0 0 0-3.5 3.5 3.5 3.5 0 0 0 3.5 3.5 3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5z");
+        }
+    }
+
+    function startAuth() {
+        let u = document.getElementById('user').value;
+        let p = document.getElementById('pass').value;
+        let err = document.getElementById('errorMsg');
+        let spin = document.getElementById('spinner');
+
+        if (u !== "bayy VIP") {
+            err.innerText = "Nickname salah!";
+        } else if (p !== "2011") {
+            err.innerText = "Password salah!";
+        } else {
+            err.innerText = "";
+            spin.style.display = "block";
+            setTimeout(() => {
+                spin.style.display = "none";
+                document.getElementById('loginBox').style.display = "none";
+                let s = document.getElementById('successText');
+                s.style.display = "block";
+                setTimeout(() => { s.style.opacity = "1"; }, 100);
+                setTimeout(() => { s.style.opacity = "0"; }, 1500);
+                setTimeout(() => {
+                    s.style.display = "none";
+                    let menu = document.getElementById('modMenu');
+                    menu.style.display = "block";
+                    setTimeout(() => { menu.style.opacity = "1"; }, 100);
+                }, 2000);
+            }, 2000);
+        }
+    }
+
+    function toggle(el) {
+        document.getElementById('clickSfx').play();
+        el.classList.toggle('active');
+    }
+</script>
+</body>
+</html>
